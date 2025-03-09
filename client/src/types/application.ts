@@ -1,0 +1,29 @@
+export type Application = {
+    id: number
+    created_at: string
+    name: string
+    dob: string
+    ssn: string
+    resstreet: string
+    rescity: string
+    resstate: string
+    reszip: string
+    rescountry: string
+    mailstreet: string
+    mailcity: string
+    mailstate: string
+    mailzip: string
+    mailcountry: string
+    phone: string
+    email: string
+    employer: string
+    income: number
+    otherincome: number
+    bankdetails: string
+    creditscore: number
+    creditlimit: number
+    duedate: string
+    finalname: string
+    finaldate: string
+    finalsignature: string
+}
