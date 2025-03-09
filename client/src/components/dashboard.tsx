@@ -29,7 +29,40 @@ export default function Dashboard() {
 
     const channel = supabase.channel("applications")
     channel.on("postgres_changes", { event: "*", schema: "public", table: "applications" }, (payload) => {
-      console.log(payload)
+      const newData = payload.new as Application
+      // If the new data is an update to an existing application
+      if (payload.eventType === 'UPDATE') {
+        setApplications(prevApplications =>
+          prevApplications.map(app =>
+            app.id === newData.id ? newData : app
+          )
+        )
+
+
+        // Update selected application if it's the one that changed
+        setSelectedApplication(prev => {
+          console.log('prev', prev)
+          console.log('newData', newData)
+          return prev?.id === newData.id ? newData : prev
+        })
+
+      }
+      // If it's a new application
+      else if (payload.eventType === 'INSERT') {
+        setApplications(prevApplications => [newData, ...prevApplications])
+      }
+      // If an application was deleted
+      else if (payload.eventType === 'DELETE') {
+        const deletedId = payload.old.id
+        setApplications(prevApplications =>
+          prevApplications.filter(app => app.id !== deletedId)
+        )
+
+        // Clear selected application if it was deleted
+        if (selectedApplication?.id === deletedId) {
+          setSelectedApplication(null)
+        }
+      }
     })
     channel.subscribe()
 
@@ -37,10 +70,6 @@ export default function Dashboard() {
       supabase.removeChannel(channel)
     }
   }, [])
-
-  
-
-
 
 
   return (

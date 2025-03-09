@@ -18,11 +18,10 @@ export async function POST(request) {
       'utf-8',
     )
     let filledLatex = file
-
     // Iterate through all properties in the data object
     Object.keys(data).forEach((key) => {
-      // Create a regex pattern to find the placeholder
-      const placeholder = new RegExp(`\${key}`, 'g')
+      // Create a regex pattern to find the placeholder with the actual key name
+      const placeholder = new RegExp('\\\\\\$' + key, 'g')
 
       // Replace the placeholder with the actual value
       filledLatex = filledLatex.replace(placeholder, data[key] || '')

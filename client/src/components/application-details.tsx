@@ -49,7 +49,6 @@ export default function ApplicationDetails({ application }: ApplicationDetailsPr
                     body: JSON.stringify(application),
                 })
                 const data = await response.blob()
-                console.log(data)
                 setPdfData(data)
             }
         }
